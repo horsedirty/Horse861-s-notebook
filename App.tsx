@@ -5,8 +5,9 @@ import { COURSE_CHAPTERS as ROBOTICS_CHAPTERS } from './constants';
 import { MAO_ZHONG_TE_CHAPTERS } from './constants_maozhongte';
 import { MAO_ZHONG_TE_QUIZ } from './constants_maozhongte_quiz';
 import { XI_CHAPTERS } from './constants_xi';
+import { INTERNET_DEV_BASE_CHAPTERS } from './InternetDevBase';
 
-type View = 'home' | 'robotics' | 'maozhongte' | 'xi';
+type View = 'home' | 'robotics' | 'maozhongte' | 'xi' | 'internetdev';
 
 function App() {
   const [currentView, setCurrentView] = useState<View>('home');
@@ -44,6 +45,17 @@ function App() {
         chapters={XI_CHAPTERS}
         onBack={() => setCurrentView('home')}
         themeColor="text-blue-500"
+      />
+    );
+  }
+
+  if (currentView === 'internetdev') {
+    return (
+      <Dashboard 
+        title="互联网开发技术基础" 
+        chapters={INTERNET_DEV_BASE_CHAPTERS}
+        onBack={() => setCurrentView('home')}
+        themeColor="text-green-500"
       />
     );
   }
