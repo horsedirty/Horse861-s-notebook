@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Dashboard } from './components/Dashboard';
 import { LandingPage } from './components/LandingPage';
-import { XiReview } from './components/XiReview';
 import { COURSE_CHAPTERS as ROBOTICS_CHAPTERS } from './constants';
 import { MAO_ZHONG_TE_CHAPTERS } from './constants_maozhongte';
 import { MAO_ZHONG_TE_QUIZ } from './constants_maozhongte_quiz';
+import { XI_CHAPTERS } from './constants_xi';
 
 type View = 'home' | 'robotics' | 'maozhongte' | 'xi';
 
@@ -39,7 +39,12 @@ function App() {
 
   if (currentView === 'xi') {
     return (
-      <XiReview onBack={() => setCurrentView('home')} />
+      <Dashboard 
+        title="习近平新时代思想" 
+        chapters={XI_CHAPTERS}
+        onBack={() => setCurrentView('home')}
+        themeColor="text-blue-500"
+      />
     );
   }
 
