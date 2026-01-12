@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2023版《习思想》期末“保姆级”复习全书</title>
+    <style>
+        :root {
+            --bg-body: #f5f7fa;
+            --bg-card: #ffffff;
+            --text-main: #2c3e50;
+            --text-sec: #7f8c8d;
+            --accent-red: #c0392b;
+            --accent-blue: #2980b9;
+            --border-color: #e1e4e8;
+            --sidebar-width: 280px;
+            --highlight-bg: #fffcf0;
+            --quote-border: #e74c3c;
+        }
+
+        body.dark-mode {
+            --bg-body: #121212;
+            --bg-card: #1e1e1e;
+            --text-main: #e0e0e0;
+            --text-sec: #a0a0a0;
+            --accent-red: #ff6b6b;
+            --accent-blue: #64b5f6;
+            --border-color: #333333;
+            --highlight-bg: #2d2d2d;
+            --quote-border: #ff6b6b;
+        }
+
+        * { box-sizing: border-box; }
+        
+        body {
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+            margin: 0;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.7;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 顶部栏 */
+        header {
+            background-color: var(--accent-red);
+            color: white;
+            padding: 0 20px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 100;
+            flex-shrink: 0;
+        }
+
+        .mode-btn {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.4);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        /* 布局容器 */
+        .container {
+            display: flex;
+            flex: 1;
+            overflow: hidden; /* 防止双重滚动条 */
+        }
+
+        /* 侧边栏 */
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--bg-card);
+            border-right: 1px solid var(--border-color);
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 20px;
+        }
+
+        .nav-item {
+            padding: 12px 20px;
+            text-decoration: none;
+            color: var(--text-main);
+            border-bottom: 1px solid var(--border-color);
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background-color: var(--accent-red);
+            color: white;
+        }
+
+        .nav-group-title {
+            padding: 10px 20px;
+            font-size: 12px;
+            color: var(--text-sec);
+            background-color: rgba(0,0,0,0.03);
+            font-weight: bold;
+        }
+
+        /* 主内容区 */
+        .content {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+        }
+
+        .chapter-box {
+            background-color: var(--bg-card);
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        h2 {
+            border-bottom: 2px solid var(--accent-red);
+            padding-bottom: 10px;
+            margin-top: 0;
+            color: var(--accent-red);
+        }
+
+        h3 {
+            color: var(--accent-blue);
+            margin-top: 25px;
+            border-left: 4px solid var(--accent-blue);
+            padding-left: 10px;
+        }
+
+        /* 核心考点样式 */
+        .point-title { font-weight: bold; color: var(--text-main); }
+        .point-content { margin-bottom: 15px; text-align: justify; }
+
+        /* 金句背诵区 */
+        .gold-sentence {
+            background-color: var(--highlight-bg);
+            border: 1px dashed var(--accent-red);
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            position: relative;
+        }
+        .gold-sentence::before {
+            content: "🔥 必背金句";
+            position: absolute;
+            top: -10px;
+            left: 10px;
+            background: var(--accent-red);
+            color: white;
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 3px;
+        }
+
+        /* 大题逻辑区 */
+        .essay-logic {
+            background-color: rgba(41, 128, 185, 0.05);
+            border-left: 4px solid var(--accent-blue);
+            padding: 15px;
+            margin-top: 15px;
+        }
+        .essay-logic strong { color: var(--accent-blue); }
+
+        /* 重点标红 */
+        .red { color: var(--accent-red); font-weight: bold; }
+        .trap { text-decoration: underline; text-decoration-style: wavy; text-decoration-color: var(--accent-red); }
+
+        /* 返回顶部 */
+        .back-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--accent-red);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            z-index: 200;
+        }
+
+        @media (max-width: 768px) {
+            .container { flex-direction: column; }
+            .sidebar { width: 100%; height: 150px; resize: vertical; }
+            .content { padding: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>习思想期末复习全书 (2023版)</h1>
+    <button class="mode-btn" onclick="toggleMode()">🌓 切换模式</button>
+</header>
+
+<div class="container">
+    <div class="sidebar">
+        <div class="nav-group-title">总论与基础</div>
+        <a href="#intro" class="nav-item">导论：体系与精髓</a>
+        <a href="#ch1" class="nav-item">第一章：新时代与历史方位</a>
+        <a href="#ch2" class="nav-item">第二章：中国式现代化(核心)</a>
+        
+        <div class="nav-group-title">核心布局</div>
+        <a href="#ch3" class="nav-item">第三章：党的全面领导(根本)</a>
+        <a href="#ch4" class="nav-item">第四章：以人民为中心(立场)</a>
+        <a href="#ch5" class="nav-item">第五章：全面深化改革</a>
+        <a href="#ch6" class="nav-item">第六章：高质量发展(经济)</a>
+        
+        <div class="nav-group-title">五位一体 & 四个全面</div>
+        <a href="#ch7" class="nav-item">第七章：教科人战略</a>
+        <a href="#ch8" class="nav-item">第八章：全过程人民民主</a>
+        <a href="#ch9" class="nav-item">第九章：全面依法治国</a>
+        <a href="#ch10" class="nav-item">第十章：文化强国</a>
+        <a href="#ch11" class="nav-item">第十一章：民生建设</a>
+        <a href="#ch12" class="nav-item">第十二章：生态文明</a>
+        <a href="#ch13" class="nav-item">第十三章：国家安全</a>
+        
+        <div class="nav-group-title">强国保障</div>
+        <a href="#ch14" class="nav-item">第十四章：国防军队</a>
+        <a href="#ch15" class="nav-item">第十五章：祖国统一</a>
+        <a href="#ch16" class="nav-item">第十六章：大国外交</a>
+        <a href="#ch17" class="nav-item">第十七章：全面从严治党</a>
+        
+        <div class="nav-group-title">⚠️ 绝密技巧</div>
+        <a href="#final-tips" class="nav-item">★ 通用大题“万能”模版</a>
+    </div>
+
+    <div class="content">
+        <!-- 导论 -->
+        <div id="intro" class="chapter-box">
+            <h2>导论：马克思主义中国化时代化新的飞跃</h2>
+            
+            <div class="gold-sentence">
+                <strong>习思想的历史地位：</strong><br>
+                1. 是当代中国马克思主义、二十一世纪马克思主义。<br>
+                2. 是<span class="red">中华文化和中国精神的时代精华</span>。<br>
+                3. 是实现中华民族伟大复兴的<span class="red">行动指南</span>。
+            </div>
+
+            <h3>1. 核心考点：两个结合</h3>
+            <p><strong>定义：</strong>坚持把马克思主义基本原理同<span class="red">中国具体实际</span>相结合、同<span class="red">中华优秀传统文化</span>相结合。</p>
+            <p><strong>意义：</strong>是推进马克思主义中国化时代化的<span class="red">根本途径</span>。</p>
+            <p class="trap">注意：第二个结合（同中华优秀传统文化结合）是近年来的新重点，强调“巩固文化主体性”。</p>
+
+            <h3>2. 核心考点：十个明确 & 十四个坚持</h3>
+            <p><strong>十个明确（侧重理论/世界观）：</strong>回答“是什么”。例如明确中国特色社会主义最本质的特征是中国共产党领导。</p>
+            <p><strong>十四个坚持（侧重实践/方法论）：</strong>回答“怎么做”。例如坚持党对一切工作的领导，坚持以人民为中心。</p>
+
+            <h3>3. 核心考点：六个必须坚持（世界观方法论）</h3>
+            <p>坚持人民至上（根本立场）、坚持自信自立（立足点）、坚持守正创新（原则）、坚持问题导向（源头）、坚持系统观念（基础方法）、坚持胸怀天下（格局）。<br><span class="red">（口诀：人自守，问系胸）</span></p>
+
+            <div class="essay-logic">
+                <strong>【主观题】为什么说习思想实现了马克思主义中国化时代化新的飞跃？</strong><br>
+                1. <strong>理论维度：</strong>提出了“两个结合”等一系列原创性治国理政新理念新思想新战略。<br>
+                2. <strong>实践维度：</strong>引领中国在改革发展稳定、内政外交国防等方面取得了历史性成就、发生了历史性变革。<br>
+                3. <strong>文化维度：</strong>将马克思主义同中华优秀传统文化深度融合，是中华文化和中国精神的时代精华。<br>
+                4. <strong>世界维度：</strong>为解决人类问题贡献了中国智慧和中国方案。
+            </div>
+        </div>
+
+        <!-- 第一章 -->
+        <div id="ch1" class="chapter-box">
+            <h2>第一章：新时代坚持和发展中国特色社会主义</h2>
+            
+            <div class="gold-sentence">
+                <strong>新时代的历史方位：</strong><br>
+                中国特色社会主义进入新时代。这是我国发展新的<span class="red">历史方位</span>。
+            </div>
+
+            <h3>1. 核心考点：主要矛盾的变化</h3>
+            <p><strong>内容：</strong>人民日益增长的<span class="red">美好生活需要</span>和<span class="red">不平衡不充分的发展</span>之间的矛盾。</p>
+            <p class="trap">陷阱：变的是“主要矛盾”，不变的是“基本国情”（社会主义初级阶段）和“国际地位”（最大发展中国家）。</p>
+
+            <h3>2. 核心考点：新时代的内涵（三个意味着）</h3>
+            <p>1. 意味着近代以来久经磨难的中华民族迎来了从<span class="red">站起来、富起来到强起来</span>的伟大飞跃。<br>
+            2. 意味着<span class="red">科学社会主义</span>在21世纪的中国焕发出强大生机活力。<br>
+            3. 意味着给世界上那些既希望加快发展又希望保持自身独立性的国家提供了<span class="red">全新选择</span>（中国智慧/中国方案）。</p>
+        </div>
+
+        <!-- 第二章 中国式现代化（重点） -->
+        <div id="ch2" class="chapter-box">
+            <h2>第二章：以中国式现代化全面推进中华民族伟大复兴</h2>
+            
+            <div class="gold-sentence">
+                <strong>定性与目标：</strong><br>
+                中国式现代化是强国建设、民族复兴的<span class="red">唯一正确道路</span>。<br>
+                总任务是：实现社会主义现代化和中华民族伟大复兴。
+            </div>
+
+            <h3>1. 必背：中国式现代化的五大特征（详细版）</h3>
+            <p>1. <strong>人口规模巨大：</strong>14亿多人口整体迈进现代化社会，艰巨性复杂性前所未有。<br>
+            2. <strong>全体人民共同富裕：</strong>不是少数人的富裕，防止两极分化。<br>
+            3. <strong>物质文明和精神文明相协调：</strong>既要富口袋，也要富脑袋。<br>
+            4. <strong>人与自然和谐共生：</strong>走可持续发展道路，不走“先污染后治理”老路。<br>
+            5. <strong>走和平发展道路：</strong>不走殖民掠夺老路，互利共赢。</p>
+
+            <h3>2. 核心考点：本质要求（9条，记首尾）</h3>
+            <p>首：坚持中国共产党领导。<br>尾：创造<span class="red">人类文明新形态</span>。</p>
+
+            <div class="essay-logic">
+                <strong>【主观题】如何理解中国式现代化创造了人类文明新形态？</strong><br>
+                1. <strong>打破迷思：</strong>打破了“现代化=西方化”的迷思，证明现代化模式是多样的。<br>
+                2. <strong>独特路径：</strong>它扎根中国大地，切合中国实际，具有鲜明的中国特色（结合五大特征简述）。<br>
+                3. <strong>世界意义：</strong>为发展中国家走向现代化提供了新的选择，为人类社会发展贡献了中国方案。
+            </div>
+        </div>
+
+        <!-- 第三章 党的领导 -->
+        <div id="ch3" class="chapter-box">
+            <h2>第三章：坚持党的全面领导</h2>
+
+            <div class="gold-sentence">
+                <strong>最高频考点：</strong><br>
+                1. 中国共产党领导是<span class="red">中国特色社会主义最本质的特征</span>。<br>
+                2. 中国共产党领导是<span class="red">中国特色社会主义制度的最大优势</span>。<br>
+                3. 党是<span class="red">最高政治领导力量</span>。
+            </div>
+
+            <h3>1. 核心考点：“两个维护”</h3>
+            <p>1. 坚决维护习近平总书记党中央的核心、全党的核心地位。<br>
+            2. 坚决维护党中央权威和集中统一领导（这是党的政治建设的首要任务）。</p>
+
+            <h3>2. 核心考点：党的领导制度体系</h3>
+            <p>党中央是坐镇中军帐的“帅”。党中央必须有“定于一尊、一锤定音”的权威。</p>
+
+            <div class="essay-logic">
+                <strong>【主观题】为什么要坚持党的全面领导？</strong><br>
+                1. <strong>历史逻辑：</strong>是历史和人民的选择（没有共产党就没有新中国）。<br>
+                2. <strong>理论逻辑：</strong>是由党的性质（先锋队）和宗旨（为人民服务）决定的；是最本质特征和最大优势。<br>
+                3. <strong>实践逻辑：</strong>是实现民族复兴的根本保证。办好中国的事情，关键在党。应对复杂局势和风险挑战，必须依靠党的领导“定海神针”。
+            </div>
+        </div>
+
+        <!-- 第四章 人民 -->
+        <div id="ch4" class="chapter-box">
+            <h2>第四章：坚持以人民为中心</h2>
+
+            <div class="gold-sentence">
+                <strong>人民观金句：</strong><br>
+                <span class="red">“江山就是人民，人民就是江山。”</span><br>
+                中国共产党领导人民打江山、守江山，守的是<span class="red">人民的心</span>。
+            </div>
+
+            <h3>1. 核心考点：基本立场</h3>
+            <p><strong>根本政治立场：</strong>人民立场。<br>
+            <strong>根本宗旨：</strong>全心全意为人民服务。<br>
+            <strong>奋斗目标：</strong>人民对美好生活的向往。</p>
+
+            <h3>2. 核心考点：共同富裕</h3>
+            <p><strong>性质：</strong>是中国特色社会主义的<span class="red">本质要求</span>。<br>
+            <strong>内涵辨析：</strong><br>
+            1. 是全体人民的富裕，不是少数人富裕。<br>
+            2. 是物质生活和精神生活的双重富裕。<br>
+            3. <strong>不是</strong>整齐划一的平均主义，<strong>不是</strong>劫富济贫。<br>
+            4. 是一个长期的历史过程，不能一蹴而就。</p>
+        </div>
+
+        <!-- 第五章 改革开放 -->
+        <div id="ch5" class="chapter-box">
+            <h2>第五章：全面深化改革开放</h2>
+            
+            <div class="gold-sentence">
+                <strong>地位：</strong>改革开放是决定当代中国前途命运的<span class="red">关键一招</span>。
+            </div>
+
+            <h3>1. 核心考点：全面深化改革总目标</h3>
+            <p>完善和发展中国特色社会主义制度，推进<span class="red">国家治理体系和治理能力现代化</span>。</p>
+
+            <h3>2. 核心考点：政府与市场的关系（经济体制改革核心）</h3>
+            <p>使市场在资源配置中起<span class="red">决定性</span>作用，更好发挥政府作用。<br>
+            <span class="trap">陷阱：以前叫“基础性作用”，现在叫“决定性作用”。</span></p>
+
+            <h3>3. 核心考点：开放</h3>
+            <p><strong>格局：</strong>推动形成全面开放新格局（陆海内外联动、东西双向互济）。<br>
+            <strong>制度型开放：</strong>从商品和要素流动型开放向规则、规制、管理、标准等制度型开放转变。</p>
+        </div>
+
+        <!-- 第六章 高质量发展（经济） -->
+        <div id="ch6" class="chapter-box">
+            <h2>第六章：推动高质量发展</h2>
+            
+            <div class="gold-sentence">
+                <strong>地位：</strong><br>
+                <span class="red">高质量发展</span>是全面建设社会主义现代化国家的<span class="red">首要任务</span>。
+            </div>
+
+            <h3>1. 必背：新发展理念（5个词+内涵）</h3>
+            <p>1. <strong>创新：</strong><span class="red">第一动力</span>，解决发展动力问题。<br>
+            2. <strong>协调：</strong>内生特点，解决发展不平衡问题。<br>
+            3. <strong>绿色：</strong>普遍形态，解决人与自然和谐问题。<br>
+            4. <strong>开放：</strong>必由之路，解决发展内外联动问题。<br>
+            5. <strong>共享：</strong><span class="red">本质要求</span>，解决社会公平正义问题。</p>
+
+            <h3>2. 核心考点：新发展格局</h3>
+            <p>构建以<span class="red">国内大循环为主体</span>、国内国际双循环相互促进的新发展格局。<br>
+            <strong>关键：</strong>在于经济循环的畅通无阻。<br>
+            <strong>最本质特征：</strong>实现高水平的自立自强。</p>
+
+            <h3>3. 核心考点：基本经济制度</h3>
+            <p>坚持“两个毫不动摇”：毫不动摇巩固和发展公有制经济，毫不动摇鼓励、支持、引导非公有制经济发展。</p>
+        </div>
+
+        <!-- 第七章 教科人 -->
+        <div id="ch7" class="chapter-box">
+            <h2>第七章：教育、科技、人才战略</h2>
+
+            <h3>1. 核心考点：三位一体</h3>
+            <p>党的二十大首次将教育、科技、人才专章部署。三者关系：<br>
+            教育是基础，科技是关键，人才是根本。</p>
+
+            <h3>2. 核心考点：三个“第一”</h3>
+            <p>科技是<span class="red">第一生产力</span>。<br>
+            人才是<span class="red">第一资源</span>。<br>
+            创新是<span class="red">第一动力</span>。</p>
+
+            <h3>3. 具体领域</h3>
+            <p><strong>教育：</strong>根本任务是<span class="red">立德树人</span>。<br>
+            <strong>科技：</strong>坚持“四个面向”（世界科技前沿、经济主战场、国家重大需求、人民生命健康）。坚决打赢关键核心技术攻坚战。</p>
+        </div>
+
+        <!-- 第八章 民主 -->
+        <div id="ch8" class="chapter-box">
+            <h2>第八章：发展全过程人民民主</h2>
+            
+            <div class="gold-sentence">
+                <strong>本质属性：</strong><br>
+                <span class="red">全过程人民民主</span>是社会主义民主政治的<span class="red">本质属性</span>。是最广泛、最真实、最管用的民主。
+            </div>
+
+            <h3>1. 核心考点：全过程的含义</h3>
+            <p>实现了过程民主和成果民主、程序民主和实质民主、直接民主和间接民主、人民民主和国家意志相统一。</p>
+
+            <h3>2. 核心考点：制度体系</h3>
+            <p><strong>根本政治制度：</strong>人民代表大会制度。<br>
+            <strong>基本政治制度：</strong><br>
+            1. 领导的多党合作和政治协商制度（<span class="red">协商民主</span>是实践全过程人民民主的重要形式/特有形式）。<br>
+            2. 民族区域自治制度（主线：铸牢<span class="red">中华民族共同体意识</span>）。<br>
+            3. 基层群众自治制度。</p>
+        </div>
+
+        <!-- 第九章 法治 -->
+        <div id="ch9" class="chapter-box">
+            <h2>第九章：全面依法治国</h2>
+
+            <div class="gold-sentence">
+                <strong>总目标：</strong><br>
+                建设中国特色社会主义<span class="red">法治体系</span>，建设社会主义<span class="red">法治国家</span>。
+            </div>
+
+            <h3>1. 核心考点：习近平法治思想的核心要义（十一个坚持）</h3>
+            <p>重点记住：坚持党对全面依法治国的领导（根本保证）、坚持以人民为中心（根本立场）。</p>
+
+            <h3>2. 核心考点：工作布局</h3>
+            <p>坚持依法治国、依法执政、依法行政共同推进；坚持法治国家、法治政府、法治社会一体建设。</p>
+
+            <div class="essay-logic">
+                <strong>【主观题】如何理解党和法的关系？</strong><br>
+                1. <strong>核心问题：</strong>党和法的关系是法治建设的核心问题。<br>
+                2. <strong>统一性：</strong>党的领导和依法治国是高度统一的。党领导人民制定宪法法律，党领导人民实施宪法法律，党自身必须在宪法法律范围内活动。<br>
+                3. <strong>反对谬论：</strong>决不能把党的领导和依法治国对立起来，决不能落入西方“党大还是法大”的政治陷阱。
+            </div>
+        </div>
+
+        <!-- 第十章 文化 -->
+        <div id="ch10" class="chapter-box">
+            <h2>第十章：建设社会主义文化强国</h2>
+
+            <div class="gold-sentence">
+                <strong>文化自信：</strong><br>
+                文化自信是一个国家、一个民族发展中<span class="red">更基本、更深沉、更持久</span>的力量。
+            </div>
+
+            <h3>1. 核心考点：根本制度</h3>
+            <p>坚持马克思主义在意识形态领域指导地位的根本制度。</p>
+
+            <h3>2. 必背：社会主义核心价值观（三个层面）</h3>
+            <p><strong>国家层面：</strong>富强、民主、文明、和谐。<br>
+            <strong>社会层面：</strong>自由、平等、公正、法治。<br>
+            <strong>个人层面：</strong>爱国、敬业、诚信、友善。<br>
+            （考试常考选择题，问属于哪个层面，必须分清）</p>
+
+            <h3>3. 核心考点：意识形态</h3>
+            <p>意识形态工作是为国家立心、为民族立魂的工作，关乎旗帜、关乎道路、关乎国家政治安全。</p>
+        </div>
+
+        <!-- 第十一章 民生 -->
+        <div id="ch11" class="chapter-box">
+            <h2>第十一章：保障和改善民生</h2>
+            
+            <h3>1. 核心考点：就业</h3>
+            <p>就业是<span class="red">最大的民生</span>。</p>
+
+            <h3>2. 核心考点：收入分配</h3>
+            <p>构建<span class="red">橄榄型</span>分配结构（扩大中等收入群体，增加低收入者收入，调节过高收入，取缔非法收入）。</p>
+
+            <h3>3. 核心考点：社会保障</h3>
+            <p>社会保障体系是人民生活的<span class="red">安全网</span>和社会运行的<span class="red">稳定器</span>。</p>
+        </div>
+
+        <!-- 第十二章 生态 -->
+        <div id="ch12" class="chapter-box">
+            <h2>第十二章：建设社会主义生态文明</h2>
+
+            <div class="gold-sentence">
+                <strong>核心理念：</strong><br>
+                <span class="red">绿水青山就是金山银山</span>（两山理论）。<br>
+                保护生态环境就是保护生产力，改善生态环境就是发展生产力。
+            </div>
+
+            <h3>1. 核心考点：双碳目标</h3>
+            <p>力争2030年前实现碳达峰，2060年前实现碳中和。</p>
+
+            <h3>2. 核心考点：系统观念</h3>
+            <p>坚持山水林田湖草沙一体化保护和系统治理。</p>
+        </div>
+
+        <!-- 第十三章 安全 -->
+        <div id="ch13" class="chapter-box">
+            <h2>第十三章：维护和塑造国家安全</h2>
+
+            <div class="gold-sentence">
+                <strong>总体国家安全观（五大要素，必背）：</strong><br>
+                以<span class="red">人民安全</span>为宗旨，<br>
+                以<span class="red">政治安全</span>为根本，<br>
+                以<span class="red">经济安全</span>为基础，<br>
+                以<span class="red">军事、科技、文化、社会安全</span>为保障，<br>
+                以<span class="red">促进国际安全</span>为依托。
+            </div>
+
+            <h3>1. 核心考点：统筹发展和安全</h3>
+            <p>安全是发展的前提，发展是安全的保障。</p>
+
+            <h3>2. 核心考点：政治安全</h3>
+            <p>在国家安全中居于首要地位，核心是维护政权安全和制度安全。</p>
+        </div>
+
+        <!-- 第十四章 军队 -->
+        <div id="ch14" class="chapter-box">
+            <h2>第十四章：建设巩固国防和强大人民军队</h2>
+
+            <h3>1. 核心考点：强军目标</h3>
+            <p>建设一支<span class="red">听党指挥</span>（灵魂，政治建军）、<span class="red">能打胜仗</span>（核心，战斗力）、<span class="red">作风优良</span>（保证）的人民军队。</p>
+
+            <h3>2. 核心考点：根本原则</h3>
+            <p>坚持党对人民军队的绝对领导（军委主席负责制）。</p>
+
+            <h3>3. 核心考点：唯一标准</h3>
+            <p><span class="red">战斗力</span>是唯一的根本的标准。</p>
+        </div>
+
+        <!-- 第十五章 统一 -->
+        <div id="ch15" class="chapter-box">
+            <h2>第十五章：坚持“一国两制”和推进祖国统一</h2>
+
+            <h3>1. 核心考点：一国两制的关系</h3>
+            <p>“一国”是根，根深才能叶茂；“一国”是本，本固才能枝荣。<br>
+            <strong>管治权：</strong>中央对特别行政区拥有<span class="red">全面管治权</span>。</p>
+
+            <h3>2. 核心考点：台湾问题</h3>
+            <p><strong>基本方针：</strong>“和平统一、一国两制”。<br>
+            <strong>政治基础：</strong><span class="red">一个中国原则</span>（九二共识的核心意涵）。</p>
+        </div>
+
+        <!-- 第十六章 外交 -->
+        <div id="ch16" class="chapter-box">
+            <h2>第十六章：中国特色大国外交</h2>
+
+            <div class="gold-sentence">
+                <strong>核心理念：</strong><br>
+                推动构建<span class="red">人类命运共同体</span>。<br>
+                内涵：建设持久和平、普遍安全、共同繁荣、开放包容、清洁美丽的世界。
+            </div>
+
+            <h3>1. 核心考点：外交布局</h3>
+            <p>大国是关键，周边是首要，发展中国家是基础，多边是舞台。</p>
+
+            <h3>2. 核心考点：一带一路</h3>
+            <p><strong>原则：</strong><span class="red">共商、共建、共享</span>。</p>
+
+            <h3>3. 核心考点：全人类共同价值</h3>
+            <p>和平、发展、公平、正义、民主、自由。（注意与社会主义核心价值观区分）</p>
+        </div>
+
+        <!-- 第十七章 治党 -->
+        <div id="ch17" class="chapter-box">
+            <h2>第十七章：全面从严治党</h2>
+
+            <div class="gold-sentence">
+                <strong>跳出历史周期律的答案：</strong><br>
+                第一个答案：让人民来监督政府（毛泽东）。<br>
+                第二个答案：<span class="red">自我革命</span>（习近平）。
+            </div>
+
+            <h3>1. 核心考点：新时代党的建设总要求</h3>
+            <p>以党的<span class="red">政治建设</span>为统领（摆在首位）。<br>
+            全面从严治党的基础是“全面”，关键是“严”，要害是“治”。</p>
+
+            <h3>2. 核心考点：反腐败</h3>
+            <p>坚持不敢腐（惩治震慑）、不能腐（制度约束）、不想腐（思想教育）一体推进。</p>
+
+            <h3>3. 核心考点：三个“务必”</h3>
+            <p>务必不忘初心、牢记使命；务必谦虚谨慎、艰苦奋斗；务必敢于斗争、善于斗争。</p>
+        </div>
+
+        <!-- 万能模版 -->
+        <div id="final-tips" class="chapter-box" style="border: 2px solid var(--accent-red);">
+            <h2 style="text-align: center;">★ 主观题“万能”答题模版 ★</h2>
+            <p><em>如果遇到不会的大题，按以下逻辑“拼凑”答案，可得基础分：</em></p>
+            
+            <p><strong>第一段：定性（是什么/地位）</strong></p>
+            <ul>
+                <li>这是习近平新时代中国特色社会主义思想的重要组成部分。</li>
+                <li>这是实现中华民族伟大复兴的必然要求/必由之路。</li>
+                <li>这是坚持以人民为中心的体现。</li>
+            </ul>
+
+            <p><strong>第二段：原因（为什么/意义）</strong></p>
+            <ul>
+                <li>有利于......（增强综合国力/提高人民生活水平/巩固党的执政地位）。</li>
+                <li>是应对百年未有之大变局、应对国内外风险挑战的需要。</li>
+                <li>只有......才能......（只有坚持党的领导，才能实现强国目标）。</li>
+            </ul>
+
+            <p><strong>第三段：措施（怎么做/路径）</strong></p>
+            <ul>
+                <li>必须坚持党的全面领导（万能第一条）。</li>
+                <li>必须坚持以人民为中心，依靠人民，造福人民。</li>
+                <li>必须贯彻新发展理念（创新/绿色/协调等，看题目主题）。</li>
+                <li>必须立足中国国情，走中国特色......道路。</li>
+                <li>必须发扬斗争精神，增强斗争本领。</li>
+            </ul>
+        </div>
+        
+        <div style="height: 50px;"></div>
+    </div>
+</div>
+
+<div class="back-top" onclick="document.querySelector('.content').scrollTo(0,0)">↑</div>
+
+<script>
+    function toggleMode() {
+        document.body.classList.toggle('dark-mode');
+        const btn = document.querySelector('.mode-btn');
+        if (document.body.classList.contains('dark-mode')) {
+            btn.textContent = '☀️ 切换亮色';
+        } else {
+            btn.textContent = '🌓 切换黑白';
+        }
+    }
+
+    // 滚动监听更新侧边栏高亮
+    const contentDiv = document.querySelector('.content');
+    const navItems = document.querySelectorAll('.nav-item');
+    const sections = document.querySelectorAll('.chapter-box');
+
+    contentDiv.addEventListener('scroll', () => {
+        let current = '';
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop - contentDiv.offsetTop;
+            if (contentDiv.scrollTop >= sectionTop - 60) {
+                current = section.getAttribute('id');
+            }
+        });
+
+        navItems.forEach(item => {
+            item.classList.remove('active');
+            if (item.getAttribute('href').includes(current)) {
+                item.classList.add('active');
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

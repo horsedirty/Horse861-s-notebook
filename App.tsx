@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { Dashboard } from './components/Dashboard';
 import { LandingPage } from './components/LandingPage';
+import { XiReview } from './components/XiReview';
 import { COURSE_CHAPTERS as ROBOTICS_CHAPTERS } from './constants';
 import { MAO_ZHONG_TE_CHAPTERS } from './constants_maozhongte';
 import { MAO_ZHONG_TE_QUIZ } from './constants_maozhongte_quiz';
 
-type View = 'home' | 'robotics' | 'maozhongte';
+type View = 'home' | 'robotics' | 'maozhongte' | 'xi';
 
 function App() {
   const [currentView, setCurrentView] = useState<View>('home');
@@ -33,6 +34,12 @@ function App() {
         onBack={() => setCurrentView('home')}
         themeColor="text-red-500" 
       />
+    );
+  }
+
+  if (currentView === 'xi') {
+    return (
+      <XiReview onBack={() => setCurrentView('home')} />
     );
   }
 

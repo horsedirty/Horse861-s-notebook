@@ -111,6 +111,40 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterCourse }) => {
               </div>
             </button>
 
+            {/* Xi Jinping Thought Course Card */}
+            <button 
+              onClick={() => onEnterCourse('xi')}
+              className="group text-left relative overflow-hidden rounded-[2rem] bg-white/10 backdrop-blur-xl border border-white/20 p-8 transition-all duration-500 hover:bg-white/20 hover:scale-[1.02] hover:shadow-2xl hover:shadow-blue-900/50"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 to-indigo-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              
+              <div className="relative z-10 flex flex-col h-full">
+                <div className="flex justify-between items-start mb-8">
+                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-500 flex items-center justify-center shadow-lg group-hover:shadow-blue-500/40 transition-all duration-300">
+                    <BookOpen className="w-8 h-8 text-white" />
+                  </div>
+                  <div className="px-3 py-1 rounded-full bg-white/20 border border-white/10 text-xs font-medium text-white/90">
+                    Ideology
+                  </div>
+                </div>
+                
+                <h2 className="text-3xl font-bold text-white mb-3 group-hover:text-blue-100 transition-colors">
+                  习近平新时代思想
+                </h2>
+                
+                <p className="text-white/70 mb-8 line-clamp-3 leading-relaxed">
+                  习近平新时代中国特色社会主义思想概论，包含导论、核心理论体系、发展战略及实践应用的复习全书。
+                </p>
+                
+                <div className="mt-auto pt-6 border-t border-white/10 flex items-center justify-between text-white group-hover:text-blue-200 transition-colors">
+                  <span className="font-medium tracking-wide">Enter Course</span>
+                  <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-all">
+                    <ArrowRight className="w-5 h-5 transform group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </div>
+              </div>
+            </button>
+
             {/* Placeholder Card */}
             <div className="rounded-[2rem] border border-white/5 bg-white/5 backdrop-blur-sm p-8 flex flex-col items-center justify-center text-center text-white/30 transition-colors hover:bg-white/10 hover:border-white/10 group cursor-default">
               <BookOpen className="w-12 h-12 mb-4 opacity-50 group-hover:opacity-80 transition-opacity" />
