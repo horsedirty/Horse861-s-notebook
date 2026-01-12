@@ -2,7 +2,7 @@ import React from 'react';
 import { Bot, ArrowRight, BookOpen, Flag } from 'lucide-react';
 
 interface LandingPageProps {
-  onEnterCourse: (courseId: 'robotics' | 'maozhongte' | 'xi' | 'internetdev') => void;
+  onEnterCourse: (courseId: 'robotics' | 'maozhongte' | 'xi' | 'internetdev' | 'os') => void;
 }
 
 export const LandingPage: React.FC<LandingPageProps> = ({ onEnterCourse }) => {
@@ -133,7 +133,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterCourse }) => {
                 </h2>
                 
                 <p className="text-white/70 mb-8 line-clamp-3 leading-relaxed">
-                  习近平新时代中国特色社会主义思想概论，包含导论、核心理论体系、发展战略及实践应用的复习全书。
+                  习近平新时代中国特色社会主义思想概论，包含导论、核理论体系、发展战略及实践应用的复习全书。
                 </p>
                 
                 <div className="mt-auto pt-6 border-t border-white/10 flex items-center justify-between text-white group-hover:text-blue-200 transition-colors">
@@ -171,6 +171,40 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterCourse }) => {
                 </p>
                 
                 <div className="mt-auto pt-6 border-t border-white/10 flex items-center justify-between text-white group-hover:text-green-200 transition-colors">
+                  <span className="font-medium tracking-wide">Enter Course</span>
+                  <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-all">
+                    <ArrowRight className="w-5 h-5 transform group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </div>
+              </div>
+            </button>
+
+            {/* Operating System Course Card */}
+            <button 
+              onClick={() => onEnterCourse('os')}
+              className="group text-left relative overflow-hidden rounded-[2rem] bg-white/10 backdrop-blur-xl border border-white/20 p-8 transition-all duration-500 hover:bg-white/20 hover:scale-[1.02] hover:shadow-2xl hover:shadow-purple-900/50"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-600/20 to-indigo-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              
+              <div className="relative z-10 flex flex-col h-full">
+                <div className="flex justify-between items-start mb-8">
+                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-600 to-indigo-500 flex items-center justify-center shadow-lg group-hover:shadow-purple-500/40 transition-all duration-300">
+                    <BookOpen className="w-8 h-8 text-white" />
+                  </div>
+                  <div className="px-3 py-1 rounded-full bg-white/20 border border-white/10 text-xs font-medium text-white/90">
+                    OS
+                  </div>
+                </div>
+                
+                <h2 className="text-3xl font-bold text-white mb-3 group-hover:text-purple-100 transition-colors">
+                  操作系统复习
+                </h2>
+                
+                <p className="text-white/70 mb-8 line-clamp-3 leading-relaxed">
+                  包含进程管理、内存管理、文件系统、设备管理等核心考点，涵盖PV操作、银行家算法、页面置换等经典算法。
+                </p>
+                
+                <div className="mt-auto pt-6 border-t border-white/10 flex items-center justify-between text-white group-hover:text-purple-200 transition-colors">
                   <span className="font-medium tracking-wide">Enter Course</span>
                   <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-all">
                     <ArrowRight className="w-5 h-5 transform group-hover:translate-x-1 transition-transform" />
