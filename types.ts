@@ -1,3 +1,4 @@
+
 export enum Difficulty {
   Easy = "基础",
   Medium = "进阶",
@@ -32,4 +33,28 @@ export interface ExamDistribution {
   name: string;
   value: number;
   color: string;
+}
+
+// --- Quiz Types ---
+
+export type QuestionType = 'single' | 'multi' | 'judgment' | 'short';
+
+export interface Question {
+  id: string;
+  type: QuestionType;
+  text: string;
+  options?: string[]; // For single/multi
+  correctAnswer?: string | string[]; // "A", "ABC", or text for display
+  analysis: string;
+}
+
+export interface QuizPart {
+  title: string; // e.g. "一、单选题"
+  questions: Question[];
+}
+
+export interface QuizChapter {
+  id: string;
+  title: string;
+  parts: QuizPart[];
 }

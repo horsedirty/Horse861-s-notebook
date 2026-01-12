@@ -1,17 +1,31 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Menu, X, Moon, Sun, Book, ChevronLeft, Home } from 'lucide-react';
-import { COURSE_CHAPTERS } from '../constants';
+import { Search, Menu, X, Moon, Sun, Book, ChevronLeft, GraduationCap, FileText } from 'lucide-react';
+import { Chapter, QuizChapter } from '../types';
 import { ChapterCard } from './ChapterCard';
+import { QuizView } from './QuizView';
 
 interface DashboardProps {
   onBack: () => void;
+  title: string;
+  chapters: Chapter[];
+  quizChapters?: QuizChapter[];
+  themeColor?: string; // Optional accent color class
 }
 
-export const Dashboard: React.FC<DashboardProps> = ({ onBack }) => {
+export const Dashboard: React.FC<DashboardProps> = ({ 
+  onBack, 
+  title, 
+  chapters,
+  quizChapters,
+  themeColor = "text-[#0071e3]"
+}) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [activeChapter, setActiveChapter] = useState(COURSE_CHAPTERS[0].id);
+  const [activeChapter, setActiveChapter] = useState(chapters[0]?.id || '');
+  
+  // New State for Mode (Notes vs Quiz)
+  const [mode, setMode] = useState<'notes' | 'quiz'>('notes');
 
   useEffect(() => {
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
@@ -23,16 +37,18 @@ export const Dashboard: React.FC<DashboardProps> = ({ onBack }) => {
     document.documentElement.classList.toggle('dark', isDarkMode);
   }, [isDarkMode]);
 
-  // Scroll spy to update active chapter
+  // Scroll spy to update active chapter (Only for Notes mode)
   useEffect(() => {
+    if (mode === 'quiz') return;
+
     const handleScroll = () => {
-      const chapters = COURSE_CHAPTERS.map(c => document.getElementById(c.id));
+      const chapterElements = chapters.map(c => document.getElementById(c.id));
       const scrollPosition = window.scrollY + 150; // Offset
 
-      for (let i = chapters.length - 1; i >= 0; i--) {
-        const section = chapters[i];
+      for (let i = chapterElements.length - 1; i >= 0; i--) {
+        const section = chapterElements[i];
         if (section && section.offsetTop <= scrollPosition) {
-          setActiveChapter(COURSE_CHAPTERS[i].id);
+          setActiveChapter(chapters[i].id);
           break;
         }
       }
@@ -40,9 +56,9 @@ export const Dashboard: React.FC<DashboardProps> = ({ onBack }) => {
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [chapters, mode]);
 
-  const filteredChapters = COURSE_CHAPTERS.filter(ch => 
+  const filteredChapters = chapters.filter(ch => 
     ch.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
     ch.keyPoints.some(kp => 
       kp.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
@@ -58,7 +74,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onBack }) => {
           <button onClick={onBack} className="p-1 -ml-2 text-gray-500 dark:text-gray-400">
             <ChevronLeft size={24} />
           </button>
-          <span className="font-semibold text-lg tracking-tight">Robotics Pro</span>
+          <span className="font-semibold text-lg tracking-tight truncate max-w-[200px]">{title}</span>
         </div>
         <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-white/10">
           {isSidebarOpen ? <X size={20} /> : <Menu size={20} />}
@@ -83,53 +99,83 @@ export const Dashboard: React.FC<DashboardProps> = ({ onBack }) => {
                 Back to Home
               </button>
               <div className="flex items-center gap-2 px-2">
-                <div className="w-8 h-8 bg-black dark:bg-white rounded-lg flex items-center justify-center text-white dark:text-black shadow-md">
+                <div className="w-8 h-8 bg-black dark:bg-white rounded-lg flex items-center justify-center text-white dark:text-black shadow-md shrink-0">
                   <Book size={18} strokeWidth={3} />
                 </div>
-                <span className="text-xl font-bold tracking-tight">Robotics Pro</span>
+                <span className="text-xl font-bold tracking-tight leading-tight">{title}</span>
               </div>
             </div>
 
+            {/* Mode Switcher (If Quiz Available) */}
+            {quizChapters && (
+              <div className="bg-gray-200/50 dark:bg-white/10 p-1 rounded-xl flex mb-6">
+                <button 
+                  onClick={() => { setMode('notes'); setIsSidebarOpen(false); }}
+                  className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-sm font-semibold transition-all ${mode === 'notes' ? 'bg-white dark:bg-[#2C2C2E] shadow-sm text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}`}
+                >
+                  <FileText size={16} />
+                  笔记
+                </button>
+                <button 
+                  onClick={() => { setMode('quiz'); setIsSidebarOpen(false); }}
+                  className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-sm font-semibold transition-all ${mode === 'quiz' ? 'bg-white dark:bg-[#2C2C2E] shadow-sm text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}`}
+                >
+                  <GraduationCap size={16} />
+                  习题
+                </button>
+              </div>
+            )}
+
             {/* Mobile Sidebar Header */}
             <div className="md:hidden mb-8 flex items-center gap-2 px-2">
-               <div className="w-8 h-8 bg-black dark:bg-white rounded-lg flex items-center justify-center text-white dark:text-black">
+               <div className="w-8 h-8 bg-black dark:bg-white rounded-lg flex items-center justify-center text-white dark:text-black shrink-0">
                   <Book size={18} strokeWidth={3} />
                 </div>
-                <span className="text-xl font-bold tracking-tight">Robotics Pro</span>
+                <span className="text-xl font-bold tracking-tight">{title}</span>
             </div>
 
-            <div className="mb-6 relative">
-              <Search className="absolute left-3 top-2.5 w-4 h-4 text-gray-400" />
-              <input 
-                type="text" 
-                placeholder="Search..." 
-                className="w-full bg-white dark:bg-[#1C1C1E] rounded-xl py-2 pl-9 pr-4 text-sm outline-none focus:ring-2 focus:ring-[#0071e3]/50 transition-all shadow-sm"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </div>
+            {mode === 'notes' && (
+              <>
+                <div className="mb-6 relative">
+                  <Search className="absolute left-3 top-2.5 w-4 h-4 text-gray-400" />
+                  <input 
+                    type="text" 
+                    placeholder="Search notes..." 
+                    className="w-full bg-white dark:bg-[#1C1C1E] rounded-xl py-2 pl-9 pr-4 text-sm outline-none focus:ring-2 focus:ring-[#0071e3]/50 transition-all shadow-sm"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                  />
+                </div>
 
-            <nav className="flex-1 overflow-y-auto space-y-1 pr-2 no-scrollbar">
-              {COURSE_CHAPTERS.map((ch) => (
-                <a
-                  key={ch.id}
-                  href={`#${ch.id}`}
-                  onClick={() => setIsSidebarOpen(false)}
-                  className={`
-                    group flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200
-                    ${activeChapter === ch.id 
-                      ? 'bg-white dark:bg-[#1C1C1E] text-[#0071e3] shadow-sm' 
-                      : 'text-gray-500 dark:text-gray-400 hover:bg-white/50 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white'}
-                  `}
-                >
-                  <span className="flex items-center gap-3">
-                    <span className={`w-5 text-center text-xs font-bold opacity-60`}>0{ch.number}</span>
-                    {ch.title.split(' ')[0]}
-                  </span>
-                  {activeChapter === ch.id && <div className="w-1.5 h-1.5 rounded-full bg-[#0071e3]" />}
-                </a>
-              ))}
-            </nav>
+                <nav className="flex-1 overflow-y-auto space-y-1 pr-2 no-scrollbar">
+                  {chapters.map((ch) => (
+                    <a
+                      key={ch.id}
+                      href={`#${ch.id}`}
+                      onClick={() => setIsSidebarOpen(false)}
+                      className={`
+                        group flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200
+                        ${activeChapter === ch.id 
+                          ? 'bg-white dark:bg-[#1C1C1E] text-[#0071e3] shadow-sm' 
+                          : 'text-gray-500 dark:text-gray-400 hover:bg-white/50 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white'}
+                      `}
+                    >
+                      <span className="flex items-center gap-3">
+                        <span className={`w-5 text-center text-xs font-bold opacity-60`}>{ch.number}</span>
+                        <span className="truncate max-w-[160px]">{ch.title}</span>
+                      </span>
+                      {activeChapter === ch.id && <div className="w-1.5 h-1.5 rounded-full bg-[#0071e3]" />}
+                    </a>
+                  ))}
+                </nav>
+              </>
+            )}
+
+            {mode === 'quiz' && quizChapters && (
+              <div className="flex-1 overflow-y-auto p-2 text-sm text-gray-500 text-center">
+                 <p>Select a chapter from the main view to start.</p>
+              </div>
+            )}
 
             <div className="mt-auto pt-6 border-t border-gray-200 dark:border-white/10">
               <button 
@@ -148,34 +194,48 @@ export const Dashboard: React.FC<DashboardProps> = ({ onBack }) => {
           <div className="max-w-5xl mx-auto px-4 sm:px-8 py-20 md:py-12">
             
             {/* Hero Section */}
-            <div className="mb-16 md:mb-24 text-center md:text-left animate-fade-in-up">
+            <div className="mb-16 md:mb-12 text-center md:text-left animate-fade-in-up">
               <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-gray-900 dark:text-white mb-6">
-                Robotics <br className="hidden md:block" />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0071e3] to-[#40a0ff]">
-                  Exam Review
-                </span>
+                {mode === 'notes' ? (
+                  <>
+                    Exam <br className="hidden md:block" />
+                    <span className={`text-transparent bg-clip-text bg-gradient-to-r ${themeColor === "text-[#0071e3]" ? "from-[#0071e3] to-[#40a0ff]" : "from-red-600 to-red-400"}`}>
+                      Review Notes
+                    </span>
+                  </>
+                ) : (
+                   <>
+                    Practice <br className="hidden md:block" />
+                    <span className={`text-transparent bg-clip-text bg-gradient-to-r ${themeColor === "text-[#0071e3]" ? "from-[#0071e3] to-[#40a0ff]" : "from-red-600 to-red-400"}`}>
+                      Question Bank
+                    </span>
+                  </>
+                )}
               </h1>
               <p className="text-lg md:text-xl text-gray-500 dark:text-gray-400 max-w-2xl leading-relaxed">
-                Comprehensive notes covering Kinematics, Dynamics, and SLAM. 
-                Featuring detailed mathematical derivations and core concepts.
+                {mode === 'notes' ? "Comprehensive study materials, key points, and exam tips." : "Test your knowledge with chapter-wise exercises and detailed analysis."}
               </p>
             </div>
 
-            {/* Chapters Feed */}
-            <div className="space-y-12">
-              {filteredChapters.map((chapter) => (
-                <ChapterCard key={chapter.id} chapter={chapter} />
-              ))}
-              
-              {filteredChapters.length === 0 && (
-                <div className="py-20 text-center">
-                  <p className="text-gray-400 text-lg">No topics found matching your search.</p>
-                </div>
-              )}
-            </div>
+            {/* Content Switch */}
+            {mode === 'notes' ? (
+              <div className="space-y-12">
+                {filteredChapters.map((chapter) => (
+                  <ChapterCard key={chapter.id} chapter={chapter} />
+                ))}
+                
+                {filteredChapters.length === 0 && (
+                  <div className="py-20 text-center">
+                    <p className="text-gray-400 text-lg">No topics found matching your search.</p>
+                  </div>
+                )}
+              </div>
+            ) : (
+              quizChapters && <QuizView chapters={quizChapters} />
+            )}
 
             <footer className="mt-24 pt-8 border-t border-gray-200 dark:border-white/10 text-center text-gray-400 text-sm">
-              <p>Designed for Robotics Course Exam Preparation.</p>
+              <p>Designed for Course Exam Preparation.</p>
             </footer>
           </div>
         </main>

@@ -1,8 +1,8 @@
 import React from 'react';
-import { Bot, ArrowRight, BookOpen } from 'lucide-react';
+import { Bot, ArrowRight, BookOpen, Flag } from 'lucide-react';
 
 interface LandingPageProps {
-  onEnterCourse: () => void;
+  onEnterCourse: (courseId: 'robotics' | 'maozhongte') => void;
 }
 
 export const LandingPage: React.FC<LandingPageProps> = ({ onEnterCourse }) => {
@@ -45,7 +45,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterCourse }) => {
             
             {/* Robotics Course Card */}
             <button 
-              onClick={onEnterCourse}
+              onClick={() => onEnterCourse('robotics')}
               className="group text-left relative overflow-hidden rounded-[2rem] bg-white/10 backdrop-blur-xl border border-white/20 p-8 transition-all duration-500 hover:bg-white/20 hover:scale-[1.02] hover:shadow-2xl hover:shadow-orange-900/50"
             >
               <div className="absolute inset-0 bg-gradient-to-br from-orange-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -56,12 +56,12 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterCourse }) => {
                     <Bot className="w-8 h-8 text-white" />
                   </div>
                   <div className="px-3 py-1 rounded-full bg-white/20 border border-white/10 text-xs font-medium text-white/90">
-                    Exam Ready
+                    Robotics
                   </div>
                 </div>
                 
                 <h2 className="text-3xl font-bold text-white mb-3 group-hover:text-orange-100 transition-colors">
-                  机器人学复习
+                  机器人学
                 </h2>
                 
                 <p className="text-white/70 mb-8 line-clamp-3 leading-relaxed">
@@ -77,7 +77,41 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterCourse }) => {
               </div>
             </button>
 
-            {/* Placeholder Card 1 */}
+            {/* Mao Zhong Te Course Card */}
+            <button 
+              onClick={() => onEnterCourse('maozhongte')}
+              className="group text-left relative overflow-hidden rounded-[2rem] bg-white/10 backdrop-blur-xl border border-white/20 p-8 transition-all duration-500 hover:bg-white/20 hover:scale-[1.02] hover:shadow-2xl hover:shadow-red-900/50"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-red-600/20 to-yellow-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              
+              <div className="relative z-10 flex flex-col h-full">
+                <div className="flex justify-between items-start mb-8">
+                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-red-600 to-yellow-400 flex items-center justify-center shadow-lg group-hover:shadow-red-500/40 transition-all duration-300">
+                    <Flag className="w-8 h-8 text-white" />
+                  </div>
+                  <div className="px-3 py-1 rounded-full bg-white/20 border border-white/10 text-xs font-medium text-white/90">
+                    Politics
+                  </div>
+                </div>
+                
+                <h2 className="text-3xl font-bold text-white mb-3 group-hover:text-red-100 transition-colors">
+                  毛中特概论
+                </h2>
+                
+                <p className="text-white/70 mb-8 line-clamp-3 leading-relaxed">
+                  极简复习时间轴、社会主要矛盾演变、毛泽东思想活的灵魂及中特理论体系大题话术库。
+                </p>
+                
+                <div className="mt-auto pt-6 border-t border-white/10 flex items-center justify-between text-white group-hover:text-red-200 transition-colors">
+                  <span className="font-medium tracking-wide">Enter Course</span>
+                  <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-all">
+                    <ArrowRight className="w-5 h-5 transform group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </div>
+              </div>
+            </button>
+
+            {/* Placeholder Card */}
             <div className="rounded-[2rem] border border-white/5 bg-white/5 backdrop-blur-sm p-8 flex flex-col items-center justify-center text-center text-white/30 transition-colors hover:bg-white/10 hover:border-white/10 group cursor-default">
               <BookOpen className="w-12 h-12 mb-4 opacity-50 group-hover:opacity-80 transition-opacity" />
               <h3 className="text-xl font-bold mb-2">更多笔记</h3>
@@ -90,7 +124,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterCourse }) => {
         {/* Footer */}
         <footer className="py-8 border-t border-white/10 mt-12 flex justify-between items-center text-white/40 text-sm">
           <p>© 2026 Horse861</p>
-          <p className="font-mono text-xs">v2.0.0</p>
+          <p className="font-mono text-xs">v2.1.0</p>
         </footer>
       </div>
       
