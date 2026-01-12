@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Menu, X, Moon, Sun, Book } from 'lucide-react';
+import { Search, Menu, X, Moon, Sun, Book, ChevronLeft, Home } from 'lucide-react';
 import { COURSE_CHAPTERS } from '../constants';
 import { ChapterCard } from './ChapterCard';
 
-export const Dashboard: React.FC = () => {
+interface DashboardProps {
+  onBack: () => void;
+}
+
+export const Dashboard: React.FC<DashboardProps> = ({ onBack }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -47,10 +51,15 @@ export const Dashboard: React.FC = () => {
   );
 
   return (
-    <div className="min-h-screen font-sans selection:bg-[#0071e3] selection:text-white">
+    <div className="min-h-screen font-sans selection:bg-[#0071e3] selection:text-white bg-[#F5F5F7] dark:bg-black">
       {/* Navbar (Mobile) */}
       <nav className="md:hidden fixed top-0 w-full z-50 bg-white/80 dark:bg-[#1D1D1F]/80 backdrop-blur-md border-b border-gray-200 dark:border-white/10 px-4 py-3 flex items-center justify-between">
-        <span className="font-semibold text-lg tracking-tight">Robotics Pro</span>
+        <div className="flex items-center gap-2">
+          <button onClick={onBack} className="p-1 -ml-2 text-gray-500 dark:text-gray-400">
+            <ChevronLeft size={24} />
+          </button>
+          <span className="font-semibold text-lg tracking-tight">Robotics Pro</span>
+        </div>
         <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-white/10">
           {isSidebarOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
@@ -59,16 +68,34 @@ export const Dashboard: React.FC = () => {
       <div className="flex">
         {/* Sidebar (Desktop + Mobile Drawer) */}
         <aside className={`
-          fixed inset-y-0 left-0 z-40 w-72 bg-[#F5F5F7]/90 dark:bg-[#000000]/90 backdrop-blur-xl border-r border-gray-200 dark:border-white/10
+          fixed inset-y-0 left-0 z-40 w-72 bg-[#F5F5F7]/95 dark:bg-[#000000]/95 backdrop-blur-xl border-r border-gray-200 dark:border-white/10
           transform transition-transform duration-500 cubic-bezier(0.16, 1, 0.3, 1) md:translate-x-0
           ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}
         `}>
           <div className="h-full flex flex-col p-6">
-            <div className="hidden md:flex items-center gap-2 mb-10 px-2">
-              <div className="w-8 h-8 bg-black dark:bg-white rounded-lg flex items-center justify-center text-white dark:text-black">
-                <Book size={18} strokeWidth={3} />
+            {/* Sidebar Header */}
+            <div className="hidden md:flex flex-col gap-4 mb-8">
+               <button 
+                onClick={onBack}
+                className="self-start flex items-center gap-1 text-sm font-medium text-gray-500 hover:text-[#0071e3] transition-colors mb-2 group"
+              >
+                <ChevronLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
+                Back to Home
+              </button>
+              <div className="flex items-center gap-2 px-2">
+                <div className="w-8 h-8 bg-black dark:bg-white rounded-lg flex items-center justify-center text-white dark:text-black shadow-md">
+                  <Book size={18} strokeWidth={3} />
+                </div>
+                <span className="text-xl font-bold tracking-tight">Robotics Pro</span>
               </div>
-              <span className="text-xl font-bold tracking-tight">Robotics Pro</span>
+            </div>
+
+            {/* Mobile Sidebar Header */}
+            <div className="md:hidden mb-8 flex items-center gap-2 px-2">
+               <div className="w-8 h-8 bg-black dark:bg-white rounded-lg flex items-center justify-center text-white dark:text-black">
+                  <Book size={18} strokeWidth={3} />
+                </div>
+                <span className="text-xl font-bold tracking-tight">Robotics Pro</span>
             </div>
 
             <div className="mb-6 relative">
