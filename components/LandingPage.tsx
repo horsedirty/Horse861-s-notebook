@@ -35,7 +35,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterCourse }) => {
             Horse861的学习笔记
           </h1>
           <p className="text-xl md:text-2xl text-white/90 font-light tracking-wide max-w-2xl">
-            记录思维的火花，构建知识的图谱。
+            哈吉米南北路多。
           </p>
         </header>
 
@@ -89,7 +89,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterCourse }) => {
 
         {/* Footer */}
         <footer className="py-8 border-t border-white/10 mt-12 flex justify-between items-center text-white/40 text-sm">
-          <p>© 2024 Horse861</p>
+          <p>© 2026 Horse861</p>
           <p className="font-mono text-xs">v2.0.0</p>
         </footer>
       </div>
