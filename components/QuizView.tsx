@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { QuizChapter, Question } from '../types';
 import { CheckCircle2, XCircle, HelpCircle, Eye, EyeOff, RotateCcw } from 'lucide-react';
+import { TextWithMath } from './MathRenderer';
 
 interface QuizViewProps {
   chapters: QuizChapter[];
@@ -111,7 +112,9 @@ const QuestionCard: React.FC<{ question: Question }> = ({ question }) => {
   return (
     <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-white/5 transition-all">
       <div className="flex items-start justify-between gap-4 mb-4">
-        <h4 className="text-gray-900 dark:text-white font-medium text-lg leading-relaxed">{question.text}</h4>
+        <h4 className="text-gray-900 dark:text-white font-medium text-lg leading-relaxed">
+          <TextWithMath text={question.text} />
+        </h4>
         {isCorrect === true && <CheckCircle2 className="w-6 h-6 text-green-500 flex-shrink-0" />}
         {isCorrect === false && <XCircle className="w-6 h-6 text-red-500 flex-shrink-0" />}
       </div>
@@ -140,7 +143,7 @@ const QuestionCard: React.FC<{ question: Question }> = ({ question }) => {
               onClick={() => handleSingleSelect(opt)}
               className={itemClass}
             >
-              {opt}
+              <TextWithMath text={opt} />
             </button>
           );
         })}
@@ -170,7 +173,7 @@ const QuestionCard: React.FC<{ question: Question }> = ({ question }) => {
                   <div className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${isSelected ? 'bg-blue-500 border-blue-500 text-white' : 'border-gray-400'}`}>
                     {isSelected && <CheckCircle2 className="w-3.5 h-3.5" />}
                   </div>
-                  {opt}
+                  <TextWithMath text={opt} />
                 </button>
               );
             })}
@@ -189,16 +192,70 @@ const QuestionCard: React.FC<{ question: Question }> = ({ question }) => {
           </>
         )}
 
-        {(question.type === 'judgment' || question.type === 'short') && (
-           <div className="pt-2">
-             <button
-               onClick={() => setShowAnalysis(!showAnalysis)}
-               className="flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-white/10 hover:bg-gray-200 dark:hover:bg-white/20 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium transition-colors"
-             >
-               {showAnalysis ? <EyeOff size={16} /> : <Eye size={16} />}
-               {showAnalysis ? '隐藏解析' : '查看答案与解析'}
-             </button>
-           </div>
+        {question.type === 'judgment' && (
+          <div className="space-y-3 pt-2">
+            <div className="flex gap-3">
+              <button
+                onClick={() => {
+                  setSelected(['正确']);
+                  const correct = question.correctAnswer === '正确';
+                  setIsCorrect(correct);
+                  setShowAnalysis(true);
+                }}
+                className={`flex-1 px-4 py-3 rounded-xl text-sm font-medium transition-all border ${
+                  selected.includes('正确') 
+                    ? isCorrect === true 
+                      ? 'bg-green-100 dark:bg-green-900/30 border-green-500 text-green-800 dark:text-green-200'
+                      : isCorrect === false
+                      ? 'bg-red-50 dark:bg-red-900/20 border-red-200 text-red-800 dark:text-red-200'
+                      : 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 text-blue-800 dark:text-blue-200'
+                    : 'border-transparent bg-gray-50 dark:bg-white/5 hover:bg-gray-100 dark:hover:bg-white/10 text-gray-700 dark:text-gray-300'
+                }`}
+              >
+                正确
+              </button>
+              <button
+                onClick={() => {
+                  setSelected(['错误']);
+                  const correct = question.correctAnswer === '错误';
+                  setIsCorrect(correct);
+                  setShowAnalysis(true);
+                }}
+                className={`flex-1 px-4 py-3 rounded-xl text-sm font-medium transition-all border ${
+                  selected.includes('错误')
+                    ? isCorrect === true
+                      ? 'bg-green-100 dark:bg-green-900/30 border-green-500 text-green-800 dark:text-green-200'
+                      : isCorrect === false
+                      ? 'bg-red-50 dark:bg-red-900/20 border-red-200 text-red-800 dark:text-red-200'
+                      : 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 text-blue-800 dark:text-blue-200'
+                    : 'border-transparent bg-gray-50 dark:bg-white/5 hover:bg-gray-100 dark:hover:bg-white/10 text-gray-700 dark:text-gray-300'
+                }`}
+              >
+                错误
+              </button>
+            </div>
+            {selected.length > 0 && (
+              <button
+                onClick={() => setShowAnalysis(!showAnalysis)}
+                className="flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-white/10 hover:bg-gray-200 dark:hover:bg-white/20 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium transition-colors"
+              >
+                {showAnalysis ? <EyeOff size={16} /> : <Eye size={16} />}
+                {showAnalysis ? '隐藏解析' : '查看解析'}
+              </button>
+            )}
+          </div>
+        )}
+
+        {question.type === 'short' && (
+          <div className="pt-2">
+            <button
+              onClick={() => setShowAnalysis(!showAnalysis)}
+              className="flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-white/10 hover:bg-gray-200 dark:hover:bg-white/20 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium transition-colors"
+            >
+              {showAnalysis ? <EyeOff size={16} /> : <Eye size={16} />}
+              {showAnalysis ? '隐藏答案与解析' : '查看答案与解析'}
+            </button>
+          </div>
         )}
       </div>
 
@@ -210,10 +267,12 @@ const QuestionCard: React.FC<{ question: Question }> = ({ question }) => {
             <span>解析</span>
           </div>
           <div className="text-sm text-yellow-900/80 dark:text-yellow-200/80 leading-relaxed">
-            {question.correctAnswer && question.type !== 'short' && (
-              <div className="mb-2 font-semibold">参考答案：{Array.isArray(question.correctAnswer) ? question.correctAnswer.join('') : question.correctAnswer}</div>
+            {question.correctAnswer && (
+              <div className="mb-2 font-semibold">
+                参考答案：<TextWithMath text={Array.isArray(question.correctAnswer) ? question.correctAnswer.join('') : question.correctAnswer} />
+              </div>
             )}
-            {question.analysis}
+            <TextWithMath text={question.analysis} />
           </div>
         </div>
       )}

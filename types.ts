@@ -10,6 +10,10 @@ export interface ContentSection {
   subtitle?: string; // Optional sub-heading within a card
   text: string; // Can contain LaTeX wrapped in $$...$$ or $...$
   list?: string[]; // Bullet points
+  table?: {
+    headers: string[];
+    rows: string[][];
+  }; // Table data
 }
 
 export interface KeyPoint {
@@ -17,6 +21,7 @@ export interface KeyPoint {
   sections: ContentSection[];
   tags?: string[];
   important?: boolean; // Highlights the card visually
+  image?: string; // Image path
 }
 
 export interface Chapter {

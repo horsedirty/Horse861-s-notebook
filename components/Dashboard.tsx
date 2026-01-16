@@ -149,12 +149,24 @@ export const Dashboard: React.FC<DashboardProps> = ({
 
                 <nav className="flex-1 overflow-y-auto space-y-1 pr-2 no-scrollbar">
                   {chapters.map((ch) => (
-                    <a
+                    <button
                       key={ch.id}
-                      href={`#${ch.id}`}
-                      onClick={() => setIsSidebarOpen(false)}
+                      onClick={() => {
+                        const element = document.getElementById(ch.id);
+                        if (element) {
+                          const offset = 120;
+                          const elementPosition = element.getBoundingClientRect().top;
+                          const offsetPosition = elementPosition + window.pageYOffset - offset;
+                          window.scrollTo({
+                            top: offsetPosition,
+                            behavior: 'smooth'
+                          });
+                        }
+                        setActiveChapter(ch.id);
+                        setIsSidebarOpen(false);
+                      }}
                       className={`
-                        group flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200
+                        group flex items-center justify-between w-full px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200
                         ${activeChapter === ch.id 
                           ? 'bg-white dark:bg-[#1C1C1E] text-[#0071e3] shadow-sm' 
                           : 'text-gray-500 dark:text-gray-400 hover:bg-white/50 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white'}
@@ -165,7 +177,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
                         <span className="truncate max-w-[160px]">{ch.title}</span>
                       </span>
                       {activeChapter === ch.id && <div className="w-1.5 h-1.5 rounded-full bg-[#0071e3]" />}
-                    </a>
+                    </button>
                   ))}
                 </nav>
               </>

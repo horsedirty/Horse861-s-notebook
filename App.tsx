@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Dashboard } from './components/Dashboard';
 import { LandingPage } from './components/LandingPage';
-import { COURSE_CHAPTERS as ROBOTICS_CHAPTERS } from './constants';
+import { COURSE_CHAPTERS as ROBOTICS_CHAPTERS, CHAPTER_QUIZZES as ROBOTICS_QUIZZES } from './constants';
 import { MAO_ZHONG_TE_CHAPTERS } from './constants_maozhongte';
 import { MAO_ZHONG_TE_QUIZ } from './constants_maozhongte_quiz';
 import { XI_CHAPTERS } from './constants_xi';
@@ -22,6 +22,7 @@ function App() {
       <Dashboard 
         title="Robotics Pro" 
         chapters={ROBOTICS_CHAPTERS} 
+        quizChapters={ROBOTICS_QUIZZES}
         onBack={() => setCurrentView('home')} 
       />
     );

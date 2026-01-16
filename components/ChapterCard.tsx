@@ -70,6 +70,16 @@ export const ChapterCard: React.FC<ChapterCardProps> = ({ chapter }) => {
                 {point.title}
               </h3>
 
+              {point.image && (
+                <div className="mb-6 rounded-2xl overflow-hidden border border-gray-200 dark:border-white/10">
+                  <img 
+                    src={point.image} 
+                    alt={point.title}
+                    className="w-full h-auto object-cover"
+                  />
+                </div>
+              )}
+
               <div className="space-y-6">
                 {point.sections.map((section, sIdx) => (
                   <div key={sIdx}>
