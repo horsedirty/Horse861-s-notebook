@@ -101,6 +101,32 @@ export const ChapterCard: React.FC<ChapterCardProps> = ({ chapter }) => {
                         ))}
                       </ul>
                     )}
+                    {section.table && (
+                      <div className="mt-4 overflow-x-auto">
+                        <table className="w-full border-collapse border border-gray-300 dark:border-gray-600 rounded-lg overflow-hidden">
+                          <thead>
+                            <tr className="bg-gray-100 dark:bg-gray-700">
+                              {section.table.headers.map((header, hIdx) => (
+                                <th key={hIdx} className="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border-b border-gray-300 dark:border-gray-600">
+                                  <TextWithMath text={header} />
+                                </th>
+                              ))}
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {section.table.rows.map((row, rIdx) => (
+                              <tr key={rIdx} className={rIdx % 2 === 0 ? 'bg-white dark:bg-[#2C2C2E]' : 'bg-gray-50 dark:bg-[#1C1C1E]'}>
+                                {row.map((cell, cIdx) => (
+                                  <td key={cIdx} className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300 border-b border-gray-200 dark:border-gray-700">
+                                    <TextWithMath text={cell} />
+                                  </td>
+                                ))}
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
