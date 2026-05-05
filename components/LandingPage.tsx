@@ -1,5 +1,5 @@
 import React from 'react';
-import { Bot, ArrowRight, BookOpen, Flag } from 'lucide-react';
+import { Bot, ArrowRight, BookOpen, Flag, Network } from 'lucide-react';
 
 interface LandingPageProps {
   onEnterCourse: (courseId: 'robotics' | 'maozhongte' | 'xi' | 'internetdev' | 'os') => void;
@@ -212,6 +212,40 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterCourse }) => {
                 </div>
               </div>
             </button>
+
+            {/* ProSpectNet Research Card */}
+            <a
+              href="/prospectnet-ijcnn.html"
+              className="group text-left relative overflow-hidden rounded-[2rem] bg-white/10 backdrop-blur-xl border border-white/20 p-8 transition-all duration-500 hover:bg-white/20 hover:scale-[1.02] hover:shadow-2xl hover:shadow-cyan-900/50 block"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/20 to-blue-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              
+              <div className="relative z-10 flex flex-col h-full">
+                <div className="flex justify-between items-start mb-8">
+                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center shadow-lg group-hover:shadow-cyan-500/40 transition-all duration-300">
+                    <Network className="w-8 h-8 text-white" />
+                  </div>
+                  <div className="px-3 py-1 rounded-full bg-white/20 border border-white/10 text-xs font-medium text-white/90">
+                    Research
+                  </div>
+                </div>
+                
+                <h2 className="text-3xl font-bold text-white mb-3 group-hover:text-cyan-100 transition-colors">
+                  ProSpectNet
+                </h2>
+                
+                <p className="text-white/70 mb-8 line-clamp-3 leading-relaxed">
+                  Efficient Traffic Forecasting with ProSpectNet. A spectral-temporal graph network for spatiotemporal prediction — IJCNN 2026.
+                </p>
+                
+                <div className="mt-auto pt-6 border-t border-white/10 flex items-center justify-between text-white group-hover:text-cyan-200 transition-colors">
+                  <span className="font-medium tracking-wide">View Paper</span>
+                  <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-all">
+                    <ArrowRight className="w-5 h-5 transform group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </div>
+              </div>
+            </a>
 
             {/* Placeholder Card */}
             <div className="rounded-[2rem] border border-white/5 bg-white/5 backdrop-blur-sm p-8 flex flex-col items-center justify-center text-center text-white/30 transition-colors hover:bg-white/10 hover:border-white/10 group cursor-default">
